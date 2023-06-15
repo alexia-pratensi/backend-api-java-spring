@@ -20,13 +20,12 @@ public class RentalController {
 	private RentalService rentalService;
 	
 	/**
-	 * Create - Add a new rental
-	 * @param rental An object rental
-	 * @return The rental object saved
+	 * Read - Get all rentals
+	 * @return - An Iterable object of rental full filled
 	 */
-	@PostMapping("/api/rentals")
-	public Rental createRental(@RequestBody Rental rental) {
-		return rentalService.saveRental(rental);
+	@GetMapping("/api/rentals")
+	public Iterable<Rental> getRentals() {
+		return rentalService.getRentals();
 	}
 	
 	/**
@@ -45,12 +44,13 @@ public class RentalController {
 	}
 	
 	/**
-	 * Read - Get all rentals
-	 * @return - An Iterable object of rental full filled
+	 * Create - Add a new rental
+	 * @param rental An object rental
+	 * @return The rental object saved
 	 */
-	@GetMapping("/api/rentals")
-	public Iterable<Rental> getRentals() {
-		return rentalService.getRentals();
+	@PostMapping("/api/rentals/{id}")
+	public Rental createRental(@RequestBody Rental rental) {
+		return rentalService.saveRental(rental);
 	}
 	
 	/**

@@ -21,10 +21,6 @@ public class RentalService {
         return rentalRepository.findAll();
     }
 
-    public void deleteRental(final Long id) {
-        rentalRepository.deleteById(id);
-    }
-
     public Rental saveRental(Rental rental) {
         Rental savedRental = rentalRepository.save(rental);
         return savedRental;
