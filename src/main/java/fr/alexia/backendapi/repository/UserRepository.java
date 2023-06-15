@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import fr.alexia.backendapi.model.Rental;
 
 @Repository
-public interface UserInterface extends CrudRepository<Rental, Long>{
+public interface UserRepository extends CrudRepository<Rental, Long>{
 
 }
