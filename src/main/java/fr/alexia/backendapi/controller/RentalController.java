@@ -24,7 +24,7 @@ public class RentalController {
 	 * @param rental An object rental
 	 * @return The rental object saved
 	 */
-	@PostMapping("/rentals")
+	@PostMapping("/api/rentals")
 	public Rental createRental(@RequestBody Rental rental) {
 		return rentalService.saveRental(rental);
 	}
@@ -34,7 +34,7 @@ public class RentalController {
 	 * @param id The id of the rental
 	 * @return a rental object full filled
 	 */
-	@GetMapping("/rentals/{id}")
+	@GetMapping("/api/rentals/{id}")
 	public Rental getRental(@PathVariable("id") final Long id) {
 		Optional<Rental> rental = rentalService.getRental(id);
 		if(rental.isPresent()) {
@@ -48,7 +48,7 @@ public class RentalController {
 	 * Read - Get all rentals
 	 * @return - An Iterable object of rental full filled
 	 */
-	@GetMapping("/rentals")
+	@GetMapping("/api/rentals")
 	public Iterable<Rental> getRentals() {
 		return rentalService.getRentals();
 	}
@@ -59,7 +59,7 @@ public class RentalController {
 	 * @param rental - The rental object updated
 	 * @return
 	 */
-	@PutMapping("/rentals/{id}")
+	@PutMapping("/api/rentals/{id}")
 	public Rental updateRental(@PathVariable("id") final Long id, @RequestBody Rental rental) {
 		Optional<Rental> e = rentalService.getRental(id);
 		if(e.isPresent()) {
