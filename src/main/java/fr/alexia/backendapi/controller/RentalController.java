@@ -81,12 +81,19 @@ public class RentalController {
 			if(picture != null) {
 				currentRental.setPicture(picture);
 			}
+			String description = rental.getDescription();
+			if(description != null) {
+				currentRental.setDescription(description);
+			}
+			int ownerId = rental.getOwnerId();
+			if(ownerId != 0) {
+				currentRental.setOwnerId(ownerId);
+			}
 			rentalService.saveRental(currentRental);
 			return currentRental;
 		} else {
 			return null;
 		}
 	}
-	
 	
 }

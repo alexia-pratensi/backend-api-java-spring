@@ -19,7 +19,7 @@ public class MessageController {
 	 * @param message An object message
 	 * @return The message object saved
 	 */
-	@PostMapping("/api/messages")
+	@PostMapping("/api/messages/")
 	public Message createMessage(@RequestBody Message message) {
 		return messageService.saveMessage(message);
 	}

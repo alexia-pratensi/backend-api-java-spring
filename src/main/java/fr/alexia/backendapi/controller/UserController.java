@@ -19,16 +19,18 @@ public class UserController {
 	 * Read - Get one user
 	 * @param user The id of the user
 	 * @return a user object full filled
-	 */
+	 
+	/**
 	@GetMapping("/api/auth/me")
-	public User getUser(@PathVariable("id") final Long id) {
-		Optional<User> user = userService.getUser(id);
+	public User getUser() {
+		Optional<User> user = userService.getUser();
 		if(user.isPresent()) {
 			return user.get();
 		} else {
 			return null;
 		}
-	}
+	*/
+	
 
 
 }
