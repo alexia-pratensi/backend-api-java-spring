@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,8 +30,9 @@ public class Rental {
 	 
 	 private String description;
 	 
-	 @Column(name="owner_id")
-	 private int ownerId;
+	 @ManyToOne
+	 @JoinColumn(name = "owner_id")
+	 private InternalUser owner;
 
 	public long getId() {
 		return id;
@@ -79,14 +82,13 @@ public class Rental {
 		this.description = description;
 	}
 
-	public int getOwnerId() {
-		return ownerId;
-	}
+    public InternalUser getOwner() {
+        return owner;
+    }
 
-	public void setOwnerId(int ownerId) {
-		this.ownerId = ownerId;
-	}
- 
+    public void setOwner(InternalUser owner) {
+        this.owner = owner;
+    }
 	 
  
 }

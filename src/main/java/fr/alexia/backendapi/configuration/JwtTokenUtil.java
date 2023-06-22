@@ -1,7 +1,6 @@
 package fr.alexia.backendapi.configuration;
 
 import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.User;
@@ -19,13 +18,14 @@ import static java.lang.String.format;
 
 @Component
 public class JwtTokenUtil {
-
+	//configurations spécifiques pour la génération et la validation des jetons JWT
 	private final String jwtSecret = "zdtlD3JK56m6wTTgsNFhqzjqP";
-	private final String jwtIssuer = "fr.romain";
+	private final String jwtIssuer = "fr.alexia";
 
 	private final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
-
+	//génère un jeton d'accès JWT en utilisant les informations de l'utilisateur fourni (algorithme de hachage (HS512))
 	public String generateAccessToken(User user) {
+		// contient le nom d'utilisateur, l'émetteur (iss), la date d'émission (iat) et la date d'expiration (exp).
 		return Jwts.builder()
 				.setSubject(format("%s", user.getUsername()))
 				.setIssuer(jwtIssuer).setIssuedAt(new Date())
@@ -33,17 +33,22 @@ public class JwtTokenUtil {
 				.signWith(SignatureAlgorithm.HS512, jwtSecret)
 				.compact();
 	}
-
+	// extrait le nom d'utilisateur à partir du jeton JWT (jwtSecret)
 	public String getUsername(String token) {
 		Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 		return claims.getSubject().split(",")[0];
 	}
-
+	
+	//récupère la date d'expiration du jeton JWT. 
+	//vérifie la signature du jeton (jwtSecret)
+	//obtient les revendications (claims) du jeton, qui contiennent la date d'expiration
 	public Date getExpirationDate(String token) {
 		Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 		return claims.getExpiration();
 	}
-
+	
+	//vérifie la signature du jeton (jwtSecret)
+	//détecte les éventuelles exceptions lors de l'analyse du jeton
 	public boolean validate(String token) {
 		try {
 			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);

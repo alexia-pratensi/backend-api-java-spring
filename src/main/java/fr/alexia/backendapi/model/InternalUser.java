@@ -28,8 +28,13 @@ public class InternalUser {
 	 * Only 1 role by user.
 	 */
 	@ManyToOne
-	@JoinColumn(name = "role_id")
-	private InternalRole role;
+    @JoinColumn(name = "owner_id")
+    private Rental rental;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Message message;
+    
 
 	public String getUsername() {
 		return username;
@@ -55,12 +60,20 @@ public class InternalUser {
 		this.password = password;
 	}
 
-	public InternalRole getRole() {
-		return role;
-	}
+	public Rental getRental() {
+        return rental;
+    }
 
-	public void setRole(InternalRole role) {
-		this.role = role;
-	}
+    public void setRental(Rental rental) {
+        this.rental = rental;
+    }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public void setMessage(Message message) {
+        this.message = message;
+    }
 
 }

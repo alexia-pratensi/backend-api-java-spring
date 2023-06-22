@@ -13,5 +13,7 @@ import fr.alexia.backendapi.model.InternalUser;
 public interface IUserRepository extends JpaRepository<InternalUser, Integer> {
 
 	List<InternalUser> findByUsername(String username);
+	
+	boolean existsByUsername(String username);
 
 }

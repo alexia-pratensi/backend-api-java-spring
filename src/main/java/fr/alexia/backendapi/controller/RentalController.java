@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.alexia.backendapi.model.InternalUser;
 import fr.alexia.backendapi.model.Rental;
 import fr.alexia.backendapi.service.RentalService;
 
@@ -85,9 +86,9 @@ public class RentalController {
 			if(description != null) {
 				currentRental.setDescription(description);
 			}
-			int ownerId = rental.getOwnerId();
-			if(ownerId != 0) {
-				currentRental.setOwnerId(ownerId);
+			InternalUser owner = rental.getOwner();
+			if(owner != null) {
+				currentRental.setOwner(owner);
 			}
 			rentalService.saveRental(currentRental);
 			return currentRental;
