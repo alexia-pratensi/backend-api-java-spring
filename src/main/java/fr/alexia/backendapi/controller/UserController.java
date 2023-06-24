@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
-import fr.alexia.backendapi.model.User;
+import fr.alexia.backendapi.model.InternalUser;
 import fr.alexia.backendapi.service.UserService;
 
 @RestController

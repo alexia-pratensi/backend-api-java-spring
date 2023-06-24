@@ -3,6 +3,7 @@ package fr.alexia.backendapi.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,9 +11,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.alexia.backendapi.model.InternalUser;
 import fr.alexia.backendapi.model.Rental;
 import fr.alexia.backendapi.service.RentalService;
-
+@CrossOrigin(origins = "*")
 @RestController
 public class RentalController {
 
@@ -82,14 +84,9 @@ public class RentalController {
 				currentRental.setPicture(picture);
 			}
 			String description = rental.getDescription();
-			if(description != null) {
-				currentRental.setDescription(description);
+			if (description != null) {
+			    currentRental.setDescription(description);
 			}
-			int ownerId = rental.getOwnerId();
-			if(ownerId != 0) {
-				currentRental.setOwnerId(ownerId);
-			}
-			rentalService.saveRental(currentRental);
 			return currentRental;
 		} else {
 			return null;

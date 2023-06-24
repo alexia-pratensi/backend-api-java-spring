@@ -13,7 +13,7 @@ public class RentalService {
  @Autowired
     private RentalRepository rentalRepository;
 
-    public Optional<Rental> getRental(final Long id) {
+    public Optional<Rental> getRental(Long id) {
         return rentalRepository.findById(id);
     }
 
