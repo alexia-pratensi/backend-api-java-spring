@@ -1,29 +1,46 @@
 package fr.alexia.backendapi.service;
 
-import java.util.Optional;
+import fr.alexia.backendapi.modelDTO.RentalDTO;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+public interface RentalService {
 
-import fr.alexia.backendapi.model.Rental;
-import fr.alexia.backendapi.repository.RentalRepository;
+    RentalDTO createRental(String name, int surface, int price, String description, String picture, Long ownerId);
 
-@Service
-public class RentalService {
- @Autowired
-    private RentalRepository rentalRepository;
+    RentalDTO updateRental(Long rentalId, String name, int surface, int price, String description, String picture);
 
-    public Optional<Rental> getRental(Long id) {
-        return rentalRepository.findById(id);
-    }
+    List<RentalDTO> getAllRentals();
 
-    public Iterable<Rental> getRentals() {
-        return rentalRepository.findAll();
-    }
-
-    public Rental saveRental(Rental rental) {
-        Rental savedRental = rentalRepository.save(rental);
-        return savedRental;
-    }
-
+    RentalDTO getRentalById(Long rentalId);
 }
+
+
+//package fr.alexia.backendapi.service;
+//
+//import java.util.Optional;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import fr.alexia.backendapi.model.Rental;
+//import fr.alexia.backendapi.repository.RentalRepository;
+//
+//@Service
+//public class RentalService {
+// @Autowired
+//    private RentalRepository rentalRepository;
+//
+//    public Optional<Rental> getRental(Long id) {
+//        return rentalRepository.findById(id);
+//    }
+//
+//    public Iterable<Rental> getRentals() {
+//        return rentalRepository.findAll();
+//    }
+//
+//    public Rental saveRental(Rental rental) {
+//        Rental savedRental = rentalRepository.save(rental);
+//        return savedRental;
+//    }
+//
+//}
