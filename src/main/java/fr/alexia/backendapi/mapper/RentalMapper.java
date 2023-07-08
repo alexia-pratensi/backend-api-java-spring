@@ -29,7 +29,7 @@ public interface RentalMapper {
 	}
 	
 	// New method for mapping from Rental to RentalDTO
-		RentalDTO mapRentalToRentalDTO(Rental rental);
+//		RentalDTO mapRentalToRentalDTO(Rental rental);
 	
 
 }

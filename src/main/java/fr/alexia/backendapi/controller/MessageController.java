@@ -26,7 +26,8 @@ public class MessageController {
     public ResponseEntity<MessageDTO> createMessage(@RequestBody Long rental_id, Long user_id, String message) {
         MessageDTO createdMessage = messageService.createMessage(rental_id,user_id,message);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMessage);
-    }
+//        "message": "Message send with success" = ResponseEntity.ok("Message sent with success"); ??
+    } 
 }
 
 

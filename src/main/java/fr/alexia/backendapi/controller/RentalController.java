@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.alexia.backendapi.modelDTO.RentalDTO;
 import fr.alexia.backendapi.service.RentalService;
 
-@CrossOrigin(origins = "/")
+@CrossOrigin(origins = "*")
 @RestController
 public class RentalController {
 
