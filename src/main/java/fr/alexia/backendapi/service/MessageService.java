@@ -1,20 +1,9 @@
 package fr.alexia.backendapi.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import fr.alexia.backendapi.DTO.MessageDTO;
 
-import fr.alexia.backendapi.model.Message;
-import fr.alexia.backendapi.repository.MessageRepository;
-
-@Service
-public class MessageService {
+public interface MessageService {
 	
-	@Autowired
-	private MessageRepository messageRepository;
-
-	public Message saveMessage(Message message) {
-        Message savedMessage= messageRepository.save(message);
-        return savedMessage;
-    }
-
+    MessageDTO createMessage(MessageDTO messageDTO);
+   
 }

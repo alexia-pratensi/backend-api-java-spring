@@ -1,51 +1,105 @@
+//package fr.alexia.backendapi.model;
+//
+//
+//import java.sql.Timestamp;
+//import java.time.LocalDate;
+//import java.util.Date;
+//
+//import org.hibernate.annotations.CreationTimestamp;
+//import org.hibernate.annotations.UpdateTimestamp;
+//import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+//
+//import com.fasterxml.jackson.annotation.JsonFormat;
+//
+//import jakarta.persistence.FetchType;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.EntityListeners;
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.GenerationType;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.JoinColumn;
+//import jakarta.persistence.ManyToOne;
+//import jakarta.persistence.Table;
+//import lombok.AllArgsConstructor;
+//import lombok.Data;
+//import lombok.NoArgsConstructor;
+//
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Data
+//@Entity
+//@EntityListeners(AuditingEntityListener.class)
+//@Table(name = "MESSAGES")
+//
+//public class Message {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+//    
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "rental_id", referencedColumnName = "id")
+//    private Rental rental;
+//    
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id",  referencedColumnName = "id")
+//    private InternalUser user;
+//    
+//    @Column(name = "message")
+//    private String message;
+//    
+//    @JsonFormat(pattern = "dd/MM/YYYY")
+//    @CreationTimestamp
+//	@Column(name = "created_at")
+//    private LocalDate createdAt;
+//    
+//    @JsonFormat(pattern = "dd/MM/YYYY")
+//    @UpdateTimestamp
+//    @Column(name = "updated_at")
+//    private LocalDate updatedAt;
+//}
 package fr.alexia.backendapi.model;
 
+import java.time.LocalDateTime;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
-@Table(name = "messages")
+//@EntityListeners(AuditingEntityListener.class)
+@Table(name = "MESSAGES")
+
 public class Message {
-	
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(name="rental_id")
-	private int rentalId;
-	
-	@Column(name="user_id")
-	private int userId;
-	
-	private String message;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public int getRentalId() {
-		return rentalId;
-	}
-
-	public void setRentalId(int rentalId) {
-		this.rentalId = rentalId;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	
+    private Long id;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rental_id", referencedColumnName = "id")
+    private Rental rental;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",  referencedColumnName = "id")
+    private InternalUser user;
+    
+    @Column(name = "message")
+    private String message;
+    
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+    
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }
