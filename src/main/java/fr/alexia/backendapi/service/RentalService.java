@@ -9,7 +9,8 @@ public interface RentalService {
 
     List<RentalDTO> getAllRentals();
 
-    RentalDTO updateRental(Long id, RentalDTO rentalDTO);
+    RentalDTO updateRental(Long rentalId, String name, int surface, int price, String picture, String description,
+            Long ownerId);
 
     RentalDTO createRental(String name, int surface, int price, String picture, String description, Long ownerId);
 

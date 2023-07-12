@@ -7,6 +7,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import fr.alexia.backendapi.DTO.RentalDTO;
 import fr.alexia.backendapi.model.InternalUser;
 import fr.alexia.backendapi.model.Rental;
@@ -49,14 +52,26 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public RentalDTO updateRental(Long id, RentalDTO rentalDTO) {
-        Rental rental = rentalRepository.findById(id).orElse(null);
-        if (rental != null) {
-            modelMapper.map(rentalDTO, rental);
-            Rental updatedRental = rentalRepository.save(rental);
-            return convertToDTO(updatedRental);
-        }
-        return null;
+    public RentalDTO updateRental(Long rentalId, String name, int surface, int price, String picture,
+            String description, Long ownerId) {
+        Rental rental = rentalRepository.findById(rentalId)
+                .orElseThrow(() -> new EntityNotFoundException("Rental not found for this id :: " + rentalId));
+
+        InternalUser owner = userRepository.findById(ownerId)
+                .orElseThrow(() -> new EntityNotFoundException("Owner not found for this id :: " + ownerId));
+
+        rental.setName(name);
+        rental.setSurface(surface);
+        rental.setPrice(price);
+        rental.setPicture(picture);
+        rental.setDescription(description);
+        rental.setOwnerId(ownerId);
+        rental.setCreatedAt(rental.getCreatedAt());
+        rental.setUpdatedAt(new Date());
+
+        Rental updatedRental = rentalRepository.save(rental);
+
+        return convertToDTO(updatedRental);
     }
 
     @Override

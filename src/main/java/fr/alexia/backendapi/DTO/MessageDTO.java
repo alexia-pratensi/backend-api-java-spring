@@ -1,7 +1,7 @@
 package fr.alexia.backendapi.DTO;
 
 import java.util.Date;
-import fr.alexia.backendapi.model.Message;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,9 @@ public class MessageDTO {
     private Long rentalId;
     private Long userId;
     private String message;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date createdAt;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date updatedAt;
 
 }
