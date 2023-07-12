@@ -2,6 +2,7 @@ package fr.alexia.backendapi.controller;
 
 import java.util.List;
 //import java.util.Optional;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import fr.alexia.backendapi.service.RentalService;
 @RestController
 public class RentalController {
 
+	private static final String integer = null;
 	@Autowired
 	private RentalService rentalService;
 
@@ -56,9 +58,16 @@ public class RentalController {
 	 * @param rental An object rental
 	 * @return The rental object saved
 	 */
-	@PostMapping("/api/rentals/{id}")
-	public ResponseEntity<RentalDTO> createRental(@RequestBody RentalDTO rentalDTO) {
-		RentalDTO createdRentalDTO = rentalService.createRental(rentalDTO);
+	@PostMapping("/api/rentals/")
+	public ResponseEntity<RentalDTO> createRental(@RequestBody Map<String, Object> requestBody) {
+		String name = requestBody.get("name").toString();
+		int surface = Integer.parseInt(requestBody.get("surface").toString());
+		int price = Integer.parseInt(requestBody.get("price").toString());
+		String picture = requestBody.get("picture").toString();
+		String description = requestBody.get("description").toString();
+		Long ownerId = Long.parseLong(requestBody.get("owner_id").toString());
+
+		RentalDTO createdRentalDTO = rentalService.createRental(name, surface, price, picture, description, ownerId);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdRentalDTO);
 	}
 

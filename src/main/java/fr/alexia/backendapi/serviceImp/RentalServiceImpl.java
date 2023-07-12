@@ -16,7 +16,6 @@ import fr.alexia.backendapi.service.RentalService;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-@Transactional
 public class RentalServiceImpl implements RentalService {
 
     @Autowired
@@ -29,19 +28,20 @@ public class RentalServiceImpl implements RentalService {
     private ModelMapper modelMapper;
 
     @Override
-    public RentalDTO createRental(RentalDTO rentalDTO) {
-        Long ownerId = rentalDTO.getOwnerId();
+    public RentalDTO createRental(String name, int surface, int price, String picture, String description,
+            Long ownerId) {
         InternalUser owner = userRepository.findById(ownerId)
                 .orElseThrow(() -> new EntityNotFoundException("Owner not found for this id :: " + ownerId));
 
         Rental rental = new Rental();
-        rental.setName(rentalDTO.getName());
-        rental.setSurface(rentalDTO.getSurface());
-        rental.setPrice(rentalDTO.getPrice());
-        rental.setPicture(rentalDTO.getPicture());
-        rental.setDescription(rentalDTO.getDescription());
+        rental.setName(name);
+        rental.setSurface(surface);
+        rental.setPrice(price);
+        rental.setPicture(picture);
+        rental.setDescription(description);
         rental.setOwnerId(ownerId);
         rental.setCreatedAt(new Date());
+        rental.setUpdatedAt(new Date());
 
         Rental savedRental = rentalRepository.save(rental);
 
