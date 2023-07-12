@@ -6,10 +6,6 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import fr.alexia.backendapi.DTO.RentalDTO;
 import fr.alexia.backendapi.model.InternalUser;
 import fr.alexia.backendapi.model.Rental;
@@ -33,7 +29,7 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public RentalDTO createRental(String name, int surface, int price, String picture, String description,
             Long ownerId) {
-        InternalUser owner = userRepository.findById(ownerId)
+        userRepository.findById(ownerId)
                 .orElseThrow(() -> new EntityNotFoundException("Owner not found for this id :: " + ownerId));
 
         Rental rental = new Rental();
@@ -92,7 +88,4 @@ public class RentalServiceImpl implements RentalService {
         return modelMapper.map(rental, RentalDTO.class);
     }
 
-    private Rental convertToEntity(RentalDTO rentalDTO) {
-        return modelMapper.map(rentalDTO, Rental.class);
-    }
 }
