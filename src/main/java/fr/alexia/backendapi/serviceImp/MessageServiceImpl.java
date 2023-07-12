@@ -1,10 +1,15 @@
 package fr.alexia.backendapi.serviceImp;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
+// import org.springframework.transaction.annotation.Transactional;
 import fr.alexia.backendapi.DTO.MessageDTO;
+import fr.alexia.backendapi.DTO.RentalDTO;
 import fr.alexia.backendapi.model.InternalUser;
 import fr.alexia.backendapi.model.Message;
 import fr.alexia.backendapi.model.Rental;
@@ -15,47 +20,41 @@ import fr.alexia.backendapi.service.MessageService;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
+// @Transactional
 public class MessageServiceImpl implements MessageService {
-	
+
 	@Autowired
-    private MessageRepository messageRepository;
+	private MessageRepository messageRepository;
 	@Autowired
-    private ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 	@Autowired
-    private UserRepository userRepository;
+	private RentalRepository rentalRepository;
 	@Autowired
-    private RentalRepository rentalRepository;
-    
-//    @Override
-//    public MessageDTO createMessage(MessageDTO messageDTO) {
-//        Message message = modelMapper.map(messageDTO, Message.class);
-//        message.setCreatedAt(LocalDateTime.now());
-//        message.setUpdatedAt(LocalDateTime.now());
-//        Message createdMessage = messageRepository.save(message);
-//        return modelMapper.map(createdMessage, MessageDTO.class);
-//    }
+	private UserRepository userRepository;
+
 	@Override
-	public MessageDTO createMessage(MessageDTO messageDTO) {
-	    Message message = modelMapper.map(messageDTO, Message.class);
-	    message.setCreatedAt(LocalDateTime.now());
-	    message.setUpdatedAt(LocalDateTime.now());
+	public MessageDTO postMessage(Long rentalId, Long userId, String message) {
 
-	    // Set the rental by ID
-	    Long rentalId = messageDTO.getRental_id().getId();
-	    Rental rental = rentalRepository.findById(rentalId)
-	            .orElseThrow(() -> new EntityNotFoundException("Rental with ID " + rentalId + " not found"));
-	    message.setRental(rental);
+		Rental rental = rentalRepository.findById(rentalId)
+				.orElseThrow(() -> new EntityNotFoundException("Rental not found for this id :: " + rentalId));
 
-	    // Set the user by ID
-	    Long userId = messageDTO.getUser_id().getId();
-	    InternalUser user = userRepository.findById(userId)
-	            .orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found"));
-	    message.setUser(user);
+		InternalUser user = userRepository.findById(userId)
+				.orElseThrow(() -> new EntityNotFoundException("User not found for this id :: " + userId));
 
-	    Message createdMessage = messageRepository.save(message);
-	    return modelMapper.map(createdMessage, MessageDTO.class);
+		Message newMessage = new Message();
+		newMessage.setRentalId(rentalId);
+		newMessage.setUserId(userId);
+		newMessage.setMessage(message);
+		newMessage.setCreatedAt(new Date());
+		newMessage.setUpdatedAt(new Date());
+
+		Message savedMessage = messageRepository.save(newMessage);
+
+		return convertToDTO(savedMessage);
 	}
 
-
+	private MessageDTO convertToDTO(Message message) {
+		return modelMapper.map(message, MessageDTO.class);
+	}
 
 }

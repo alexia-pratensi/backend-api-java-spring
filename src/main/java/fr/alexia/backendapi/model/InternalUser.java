@@ -1,9 +1,7 @@
 package fr.alexia.backendapi.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,28 +24,28 @@ public class InternalUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(name = "email")
+
+    @Column(nullable = false, unique = true)
     private String email;
-    
-    @Column(name = "name")
+
+    @Column(nullable = false)
     private String name;
-    
-    @Column(name = "password")
+
+    @Column(nullable = false)
     private String password;
-    
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-    
+
+    @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-    
-    // Relation One-to-Many avec Rental
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Rental> rentals;
-    
-    // Relation One-to-Many avec Message
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Message> messages;
-    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+
+    // @OneToMany(mappedBy = "owner")
+    // private List<Rental> rentals;
+
+    // @OneToMany(mappedBy = "user")
+    // private List<Message> messages;
+
 }

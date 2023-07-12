@@ -22,57 +22,61 @@ public class RentalController {
 
 	@Autowired
 	private RentalService rentalService;
-	
+
 	/**
 	 * Read - Get all rentals
+	 * 
 	 * @return - An Iterable object of rental full filled
 	 */
 	@GetMapping("/api/rentals")
-	 public ResponseEntity<List<RentalDTO>> getAllRentals() {
-        List<RentalDTO> rentalDTOs = rentalService.getAllRentals();
-        return ResponseEntity.ok(rentalDTOs);
-    }
-	
+	public ResponseEntity<List<RentalDTO>> getAllRentals() {
+		List<RentalDTO> rentalDTOs = rentalService.getAllRentals();
+		return ResponseEntity.ok(rentalDTOs);
+	}
+
 	/**
-	 * Read - Get one rental 
+	 * Read - Get one rental
+	 * 
 	 * @param id The id of the rental
 	 * @return a rental object full filled
 	 */
 	@GetMapping("/api/rentals/{id}")
-	 public ResponseEntity<RentalDTO> getRentalById(@PathVariable Long id) {
-        RentalDTO rentalDTO = rentalService.getRentalById(id);
-        return ResponseEntity.ok(rentalDTO);
-//        if (rentalDTO != null) {
-//            return ResponseEntity.ok(rentalDTO);
-//        }
-//        return ResponseEntity.notFound().build();
-    }
-	
+	public ResponseEntity<RentalDTO> getRentalById(@PathVariable Long id) {
+		RentalDTO rentalDTO = rentalService.getRentalById(id);
+		if (rentalDTO != null) {
+			return ResponseEntity.ok(rentalDTO);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
 	/**
 	 * Create - Add a new rental
+	 * 
 	 * @param rental An object rental
 	 * @return The rental object saved
 	 */
 	@PostMapping("/api/rentals/{id}")
-	 public ResponseEntity<RentalDTO> createRental(@RequestBody RentalDTO rentalDTO) {
-        RentalDTO createdRentalDTO = rentalService.createRental(rentalDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdRentalDTO);
-    }
-	
+	public ResponseEntity<RentalDTO> createRental(@RequestBody RentalDTO rentalDTO) {
+		RentalDTO createdRentalDTO = rentalService.createRental(rentalDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdRentalDTO);
+	}
+
 	/**
 	 * Update - Update an existing rental
-	 * @param id - The id of the rental to update
+	 * 
+	 * @param id     - The id of the rental to update
 	 * @param rental - The rental object updated
 	 * @return
 	 */
 	@PutMapping("/api/rentals/{id}")
 	public ResponseEntity<RentalDTO> updateRental(@PathVariable Long id, @RequestBody RentalDTO rentalDTO) {
-        RentalDTO updatedRentalDTO = rentalService.updateRental(id, rentalDTO);
-        return ResponseEntity.ok(updatedRentalDTO);
-//        if (updatedRentalDTO != null) {
-//            return ResponseEntity.ok(updatedRentalDTO);
-//        }
-//        return ResponseEntity.notFound().build();
-    }
-	
+		RentalDTO updatedRentalDTO = rentalService.updateRental(id, rentalDTO);
+		// return ResponseEntity.ok(updatedRentalDTO);
+		if (updatedRentalDTO != null) {
+			return ResponseEntity.ok(updatedRentalDTO);
+		}
+		return ResponseEntity.notFound().build();
+	}
+
 }

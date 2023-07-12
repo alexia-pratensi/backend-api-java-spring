@@ -1,25 +1,6 @@
-//package fr.alexia.backendapi.DTO;
-//
-//import java.time.LocalDate;
-//import java.time.LocalDateTime;
-//
-//import lombok.Data;
-//
-//
-//@Data
-//public class InternalUserDTO {
-//	private Long id;
-//    private String email;
-//    private String name;
-//    private String password;
-//    private LocalDate createdAt;
-//    private LocalDate updatedAt;
-//}
-
 package fr.alexia.backendapi.DTO;
 
-import java.time.LocalDateTime;
-
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,10 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class InternalUserDTO {
-	private Long id;
-    private String email;
+    private Long id;
     private String name;
-    private String password;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String email;
+    private Date createdAt;
+    private Date updatedAt;
 }
+
+// public static InternalUserDTO fromEntity(InternalUser user, ModelMapper
+// modelMapper) {
+// return modelMapper.map(user, InternalUserDTO.class);
+// }

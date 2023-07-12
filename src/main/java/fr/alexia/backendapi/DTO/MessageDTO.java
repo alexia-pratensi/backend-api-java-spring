@@ -1,41 +1,31 @@
-//package fr.alexia.backendapi.DTO;
-//
-//import java.time.LocalDate;
-//import java.util.Date;
-//
-//import com.fasterxml.jackson.annotation.JsonProperty;
-//
-//import lombok.AllArgsConstructor;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
-//
-//@Data
-//public class MessageDTO {
-//	private Long id;
-//	@JsonProperty("rental_id")
-//    private Long rental;
-//	@JsonProperty("user_id")
-//    private Long user;
-//    private String message;
-//    private LocalDate createdAt;
-//    private LocalDate updatedAt;
-//}
 package fr.alexia.backendapi.DTO;
 
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.util.Date;
+import fr.alexia.backendapi.model.Message;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class MessageDTO {
-	private Long id;
-	@JsonProperty("rental_id")
-    private RentalDTO rental_id;
-	@JsonProperty("user_id")
-    private InternalUserDTO user_id;
+    private Long id;
+    private Long rentalId;
+    private Long userId;
     private String message;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
+
 }
+
+// public static MessageDTO fromEntity(Message message) {
+// MessageDTO messageDTO = new MessageDTO();
+// messageDTO.setId(message.getId());
+// messageDTO.setRentalId(message.getRental());
+// messageDTO.setUserId(message.getUser());
+// messageDTO.setMessage(message.getMessage());
+// messageDTO.setCreatedAt(message.getCreatedAt());
+// messageDTO.setUpdatedAt(message.getUpdatedAt());
+// return messageDTO;
+// }
