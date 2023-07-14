@@ -25,13 +25,9 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @ManyToOne
-    // @JoinColumn(name = "rental_id", referencedColumnName = "id")
     @Column(name = "rental_id", nullable = false)
     private Long rentalId;
 
-    // @ManyToOne
-    // @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Column(name = "user_id", nullable = false)
     private Long userId;
 

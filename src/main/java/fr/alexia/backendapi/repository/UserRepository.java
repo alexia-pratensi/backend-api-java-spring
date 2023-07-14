@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import fr.alexia.backendapi.model.InternalUser;
 
 @Repository
-public interface UserRepository extends JpaRepository<InternalUser, Long>{
+public interface UserRepository extends JpaRepository<InternalUser, Long> {
 
 }
