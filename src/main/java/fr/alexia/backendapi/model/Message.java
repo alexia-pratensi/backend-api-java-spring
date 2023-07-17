@@ -6,8 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -25,13 +23,9 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @ManyToOne
-    // @JoinColumn(name = "rental_id", referencedColumnName = "id")
     @Column(name = "rental_id", nullable = false)
     private Long rentalId;
 
-    // @ManyToOne
-    // @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Column(name = "user_id", nullable = false)
     private Long userId;
 

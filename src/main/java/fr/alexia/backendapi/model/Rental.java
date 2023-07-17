@@ -1,18 +1,11 @@
 package fr.alexia.backendapi.model;
 
 import java.util.Date;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -44,8 +37,6 @@ public class Rental {
     @Column(nullable = false, length = 2000)
     private String description;
 
-    // @ManyToOne
-    // @JoinColumn(name = "owner_id", nullable = false, referencedColumnName = "id")
     @Column(name = "owner_id", nullable = false)
     private Long ownerId;
 
@@ -57,6 +48,4 @@ public class Rental {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    // @OneToMany(mappedBy = "rental")
-    // private List<Message> messages;
 }

@@ -1,5 +1,7 @@
 package fr.alexia.backendapi.configuration;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +29,7 @@ public class SecurityConfig {
 
 	@Autowired
 	private JwtTokenFilter jwtTokenFilter;
-	
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http = http.cors().and().csrf().disable();
@@ -35,33 +37,37 @@ public class SecurityConfig {
 		http = http.exceptionHandling().authenticationEntryPoint((request, response, ex) -> {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
 		}).and();
-		
-		http.authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll()
-		.anyRequest().authenticated();
-		
+
+		http.authorizeHttpRequests()
+				.requestMatchers("/api/auth/login").permitAll()
+				.requestMatchers("/api/auth/register").permitAll()
+				.anyRequest().authenticated();
+
+		// http.authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll()
+		// .anyRequest().authenticated();
+
 		http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-		
+
 		return http.build();
 	}
-	
-	
+
 	@Bean
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOrigin("*");
+		config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
 	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder,
 			UserDetailsService userDetailService) throws Exception {
@@ -70,5 +76,5 @@ public class SecurityConfig {
 				.passwordEncoder(bCryptPasswordEncoder)
 				.and().build();
 	}
-	
+
 }
