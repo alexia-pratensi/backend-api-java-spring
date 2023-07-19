@@ -1,11 +1,14 @@
 package fr.alexia.backendapi.serviceImp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import fr.alexia.backendapi.DTO.ModelMapperConfig;
 import fr.alexia.backendapi.DTO.RentalDTO;
 import fr.alexia.backendapi.model.InternalUser;
 import fr.alexia.backendapi.model.Rental;
@@ -79,6 +82,7 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public List<RentalDTO> getAllRentals() {
         List<Rental> rentals = rentalRepository.findAll();
+        System.out.println(rentals);
         return rentals.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -87,5 +91,14 @@ public class RentalServiceImpl implements RentalService {
     private RentalDTO convertToDTO(Rental rental) {
         return modelMapper.map(rental, RentalDTO.class);
     }
+    // @Override
+    // public List<RentalDTO> getAllRentals() {
+    // List<Rental> rentals = rentalRepository.findAll();
+    // List<RentalDTO> rentalsDTO = new ArrayList<RentalDTO>();
+    // for (Rental rental : rentals) {
+    // rentalsDTO.add(convertToDTO(rental));
+    // }
+    // return rentalsDTO;
+    // }
 
 }
