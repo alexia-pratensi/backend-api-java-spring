@@ -19,8 +19,8 @@ public class RentalDTO {
 	private String description;
 	private Long ownerId;
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date createdAt;
+	private Date created_at;
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date updatedAt;
+	private Date updated_at;
 
 }

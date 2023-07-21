@@ -74,7 +74,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public RentalDTO getRentalById(Long id) {
+    public RentalDTO getRental(Long id) {
         Rental rental = rentalRepository.findById(id).orElse(null);
         return convertToDTO(rental);
     }

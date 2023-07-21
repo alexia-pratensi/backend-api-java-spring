@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import fr.alexia.backendapi.DTO.RentalDTO;
+import fr.alexia.backendapi.DTO.RentalsResponse;
 import fr.alexia.backendapi.service.RentalService;
+import fr.alexia.backendapi.serviceImp.RentalServiceImpl;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -23,17 +25,19 @@ import fr.alexia.backendapi.service.RentalService;
 public class RentalController {
 
 	@Autowired
-	private RentalService rentalService;
+	private RentalServiceImpl rentalServiceImpl;
 
 	/**
 	 * Read - Get all rentals
 	 * 
 	 * @return - An Iterable object of rental full filled
 	 */
+
 	@GetMapping("/rentals")
-	public ResponseEntity<List<RentalDTO>> getAllRentals() {
-		List<RentalDTO> rentalDTOs = rentalService.getAllRentals();
-		return new ResponseEntity<>(rentalDTOs, HttpStatus.OK);
+	public ResponseEntity<RentalsResponse> getAllRentals() {
+		List<RentalDTO> rentalDTOs = rentalServiceImpl.getAllRentals();
+		RentalsResponse response = new RentalsResponse(rentalDTOs);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	/**
@@ -44,13 +48,22 @@ public class RentalController {
 	 */
 	@GetMapping("/rentals/{id}")
 	public ResponseEntity<RentalDTO> getRentalById(@PathVariable Long id) {
-		RentalDTO rentalDTO = rentalService.getRentalById(id);
+		RentalDTO rentalDTO = rentalServiceImpl.getRental(id);
 		if (rentalDTO != null) {
 			return ResponseEntity.ok(rentalDTO);
 		} else {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	// @GetMapping("/rentals/{rentalId}")
+	// public ResponseEntity<RentalDTO> getRentalById(@PathVariable Long rentalId) {
+	// RentalDTO rentalDTO = rentalServiceImpl.getRental(rentalId);
+	// if (rentalDTO != null) {
+	// return ResponseEntity.ok(rentalDTO);
+	// } else {
+	// return ResponseEntity.notFound().build();
+	// }
+	// }
 
 	/**
 	 * Create - Add a new rental
@@ -67,7 +80,7 @@ public class RentalController {
 		String description = requestBody.get("description").toString();
 		Long ownerId = Long.parseLong(requestBody.get("owner_id").toString());
 
-		rentalService.createRental(name, surface, price, picture, description, ownerId);
+		rentalServiceImpl.createRental(name, surface, price, picture, description, ownerId);
 
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "Rental created!");
@@ -93,7 +106,7 @@ public class RentalController {
 		String description = requestBody.get("description").toString();
 		Long ownerId = Long.parseLong(requestBody.get("owner_id").toString());
 
-		rentalService.updateRental(rentalId, name, surface, price, picture, description, ownerId);
+		rentalServiceImpl.updateRental(rentalId, name, surface, price, picture, description, ownerId);
 
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "Rental updated!");

@@ -5,7 +5,7 @@ import fr.alexia.backendapi.DTO.RentalDTO;
 
 public interface RentalService {
 
-    RentalDTO getRentalById(Long id);
+    RentalDTO getRental(Long id);
 
     List<RentalDTO> getAllRentals();
 
