@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageRequest {
-
-    private Long rentalId;
-    private Long userId;
+    private Long rental_id;
+    private Long user_id;
     private String message;
 }

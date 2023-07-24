@@ -1,9 +1,6 @@
 package fr.alexia.backendapi.model;
 
 import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "RENTALS")
 public class Rental {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,17 +38,15 @@ public class Rental {
     @Column(nullable = false, length = 2000)
     private String description;
 
-    @Column(name = "owner_id", nullable = false)
-    private Long ownerId;
+    @Column(name = "owner_id")
+    private Long owner_id;
 
     @Column(name = "created_at", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private Date createdAt;
+    private Date created_at;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private Date updatedAt;
+    private Date updated_at;
 
 }

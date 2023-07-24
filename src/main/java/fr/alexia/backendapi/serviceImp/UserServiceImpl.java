@@ -11,10 +11,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import fr.alexia.backendapi.DTO.AuthResponse;
 import fr.alexia.backendapi.DTO.InternalUserDTO;
 import fr.alexia.backendapi.DTO.LoginRequest;
@@ -35,23 +34,22 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    // @Override
-    // public InternalUserDTO getUserById(Long id) {
-    // InternalUser user = userRepository.findById(id).orElse(null);
-    // if (user != null) {
-    // return convertToDTO(user);
-    // }
-    // return null;
-    // }
-
     private InternalUserDTO convertToDTO(InternalUser user) {
         return modelMapper.map(user, InternalUserDTO.class);
+    }
+
+    public InternalUserDTO getUserById(Long id) {
+        Optional<InternalUser> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return convertToDTO(user.get());
+        }
+        return null;
     }
 
     public boolean existsByName(String username) {
@@ -59,20 +57,18 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDetails registerUser(InternalUser user) {
-        // Vérifier si l'utilisateur existe déjà
+
         if (existsByName(user.getEmail())) {
             throw new IllegalArgumentException("email already exists");
         }
 
-        // Encoder le mot de passe avant de l'enregistrer
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user.setName(user.getEmail());
         user.setEmail(user.getEmail());
-        user.setCreatedAt(new Date());
-        user.setUpdatedAt(new Date());
+        user.setCreated_at(new Date());
+        user.setUpdated_at(new Date());
 
-        // Enregistrer l'utilisateur
         userRepository.save(user);
 
         UserDetails userDetails = new User(
@@ -89,40 +85,19 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
             if (authenticate.isAuthenticated()) {
-                // L'authentification est réussie, vous pouvez maintenant générer le token JWT
                 User authenticatedUser = (User) authenticate.getPrincipal();
                 String token = jwtTokenUtil.generateAccessToken(authenticatedUser);
 
-                // Créer et renvoyer l'AuthResponse avec le token
                 AuthResponse authResponse = new AuthResponse(token);
                 return authResponse;
             } else {
-                // Gérer l'échec de l'authentification si nécessaire
                 throw new BadCredentialsException("Invalid credentials");
             }
+
         } catch (AuthenticationException ex) {
-            // Gérer l'échec de l'authentification si nécessaire
             throw new BadCredentialsException("Invalid credentials");
         }
-        // try {
-        // String encodedPassword = new
-        // BCryptPasswordEncoder().encode(loginRequest.getPassword());
-        // Authentication authenticate = authenticationManager.authenticate(
-        // new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
-        // encodedPassword));
 
-        // User authenticatedUser = (User) authenticate.getPrincipal();
-
-        // String token = jwtTokenUtil.generateAccessToken(authenticatedUser);
-
-        // // Create and return the AuthResponse with the token
-        // AuthResponse authResponse = new AuthResponse(token);
-
-        // return authResponse;
-        // } catch (AuthenticationException ex) {
-        // // Handle authentication failure here, if needed
-        // throw new BadCredentialsException("Invalid credentials");
-        // }
     }
 
     @Override

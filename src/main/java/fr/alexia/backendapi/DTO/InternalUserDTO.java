@@ -13,11 +13,6 @@ public class InternalUserDTO {
     private String name;
     private String email;
     private String password;
-    private Date createdAt;
-    private Date updatedAt;
+    private Date created_at;
+    private Date updated_at;
 }
-
-// public static InternalUserDTO fromEntity(InternalUser user, ModelMapper
-// modelMapper) {
-// return modelMapper.map(user, InternalUserDTO.class);
-// }

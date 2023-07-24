@@ -1,11 +1,11 @@
 package fr.alexia.backendapi.configuration;
 
 import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
 import jakarta.servlet.http.HttpServletResponse;
 
 @EnableWebSecurity
@@ -32,21 +31,38 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http = http.cors().and().csrf().disable();
-		http = http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
-		http = http.exceptionHandling().authenticationEntryPoint((request, response, ex) -> {
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
-		}).and();
+		// http = http.cors().and().csrf().disable();
+		// http =
+		// http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
+		// http = http.exceptionHandling().authenticationEntryPoint((request, response,
+		// ex) -> {
+		// response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
+		// }).and();
 
-		http.authorizeHttpRequests()
-				.requestMatchers("/api/auth/login").permitAll()
-				.requestMatchers("/api/auth/register").permitAll()
-				.anyRequest().authenticated();
-
-		// http.authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll()
+		// http.authorizeHttpRequests()
+		// .requestMatchers("/api/auth/login").permitAll()
+		// .requestMatchers("/api/auth/register").permitAll()
 		// .anyRequest().authenticated();
 
-		http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+		// http.addFilterBefore(jwtTokenFilter,
+		// UsernamePasswordAuthenticationFilter.class);
+
+		http
+				.cors(Customizer.withDefaults())
+				.csrf(csrf -> csrf.disable())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.exceptionHandling(handler -> handler.authenticationEntryPoint((request, response, ex) -> {
+					response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
+				}))
+
+				.authorizeHttpRequests(authorize -> {
+					authorize
+							.requestMatchers("/api/auth/login").permitAll()
+							.requestMatchers("/api/auth/register").permitAll()
+							.anyRequest().authenticated();
+				})
+
+				.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
@@ -57,8 +73,6 @@ public class SecurityConfig {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
 		config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-		// config.addAllowedOrigin("*");
-		// config.addAllowedOriginPattern("http://localhost:4200/**");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration("/**", config);

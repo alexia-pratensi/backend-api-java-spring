@@ -1,26 +1,23 @@
 package fr.alexia.backendapi.DTO;
 
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class RentalDTO {
-
 	private Long id;
 	private String name;
 	private int surface;
 	private int price;
 	private String picture;
 	private String description;
-	private Long ownerId;
-	@JsonFormat(pattern = "dd/MM/yyyy")
+	private Long owner_id;
 	private Date created_at;
-	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date updated_at;
-
 }
