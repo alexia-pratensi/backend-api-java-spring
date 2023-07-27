@@ -2,10 +2,13 @@ package fr.alexia.backendapi.serviceImp;
 
 import java.util.Date;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import fr.alexia.backendapi.DTO.InternalUserDTO;
 import fr.alexia.backendapi.DTO.MessageDTO;
+import fr.alexia.backendapi.controller.UserController;
 import fr.alexia.backendapi.model.Message;
 import fr.alexia.backendapi.repository.MessageRepository;
 import fr.alexia.backendapi.repository.RentalRepository;
@@ -15,15 +18,30 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class MessageServiceImpl implements MessageService {
 
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
 	@Autowired
 	private MessageRepository messageRepository;
+
 	@Autowired
 	private ModelMapper modelMapper;
+
 	@Autowired
 	private RentalRepository rentalRepository;
+
 	@Autowired
 	private UserServiceImpl userServiceImpl;
 
+	/**
+	 * Posts a message for a rental.
+	 *
+	 * @param rentalId The ID of the rental to post the message for.
+	 * @param userId   The ID of the user posting the message.
+	 * @param message  The content of the message to be posted.
+	 * @return The DTO representation of the posted message.
+	 * @throws EntityNotFoundException if the rental with the given ID does not
+	 *                                 exist.
+	 */
 	@Override
 	public MessageDTO postMessage(Long rentalId, Long userId, String message) {
 
@@ -44,6 +62,12 @@ public class MessageServiceImpl implements MessageService {
 		return convertToDTO(savedMessage);
 	}
 
+	/**
+	 * Converts a Message entity to its corresponding DTO representation.
+	 *
+	 * @param message The Message entity to be converted.
+	 * @return The DTO representation of the Message entity.
+	 */
 	private MessageDTO convertToDTO(Message message) {
 		return modelMapper.map(message, MessageDTO.class);
 	}

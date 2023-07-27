@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RentalsResponse {
+public class RentalsDTO {
 
     private List<RentalDTO> rentals;
 }

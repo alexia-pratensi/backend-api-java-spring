@@ -13,6 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.alexia.backendapi.DTO.MessageRequest;
 import fr.alexia.backendapi.DTO.ResponseRequest;
 import fr.alexia.backendapi.serviceImp.MessageServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -24,8 +31,25 @@ public class MessageController {
 	@Autowired
 	private MessageServiceImpl messageServiceImpl;
 
+	/**
+	 * Post a new message
+	 *
+	 * @param messageDTO The MessageRequest object containing rental_id, user_id,
+	 *                   and message.
+	 * @return ResponseEntity<ResponseRequest> A response entity containing the
+	 *         result of the message posting operation.
+	 */
+	@Operation(summary = "Post a new message", description = "Route for posting a new message.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Message sent", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseRequest.class))
+			}),
+			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content),
+			@ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+	})
 	@PostMapping("/messages")
-	public ResponseEntity<ResponseRequest> postMessage(@RequestBody MessageRequest messageDTO) {
+	public ResponseEntity<ResponseRequest> postMessage(
+			@Parameter(description = "rental_id, user_id, message") @Valid @RequestBody MessageRequest messageDTO) {
 		try {
 			logger.info("messageDTO is: ", messageDTO.getRental_id());
 

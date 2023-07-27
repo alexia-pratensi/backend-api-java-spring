@@ -31,38 +31,56 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private ModelMapper modelMapper;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    /**
+     * Convert an InternalUser entity to an InternalUserDTO data transfer object.
+     *
+     * @param user The InternalUser entity to convert.
+     * @return The converted InternalUserDTO data transfer object.
+     */
     private InternalUserDTO convertToDTO(InternalUser user) {
         return modelMapper.map(user, InternalUserDTO.class);
     }
 
-    public InternalUserDTO getUserById(Long id) {
-        Optional<InternalUser> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return convertToDTO(user.get());
-        }
-        return null;
+    /**
+     * Check if a user with the given email already exists.
+     *
+     * @param email The email address of the user to check.
+     * @return true if a user with the given email exists, false
+     *         otherwise.
+     */
+    public boolean existsByEmail(String name) {
+        return userRepository.existsByEmail(name);
     }
 
-    public boolean existsByName(String username) {
-        return userRepository.existsByName(username);
-    }
-
+    /**
+     * Register a new user.
+     *
+     * @param user The InternalUser object representing the new user to register.
+     * @return The UserDetails object representing the registered user.
+     * @throws IllegalArgumentException if a user with the same email already
+     *                                  exists.
+     */
     public UserDetails registerUser(InternalUser user) {
 
-        if (existsByName(user.getEmail())) {
+        if (existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("email already exists");
         }
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
+
         user.setPassword(encodedPassword);
         user.setName(user.getEmail());
         user.setEmail(user.getEmail());
@@ -79,6 +97,17 @@ public class UserServiceImpl implements UserService {
         return userDetails;
     }
 
+    /**
+     * Authenticate a user and generate an access token upon successful
+     * authentication.
+     *
+     * @param loginRequest The LoginRequest object containing the user's email and
+     *                     password.
+     * @return The AuthResponse containing the generated access token upon
+     *         successful authentication.
+     * @throws BadCredentialsException if the authentication fails (invalid
+     *                                 credentials).
+     */
     public AuthResponse loginUser(LoginRequest loginRequest) {
         try {
             Authentication authenticate = authenticationManager.authenticate(
@@ -100,6 +129,12 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * Get the currently authenticated user.
+     *
+     * @return The InternalUserDTO representing the currently authenticated user, or
+     *         null if not authenticated.
+     */
     @Override
     public InternalUserDTO getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

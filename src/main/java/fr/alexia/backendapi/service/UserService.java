@@ -10,12 +10,10 @@ public interface UserService {
 
     UserDetails registerUser(InternalUser user);
 
-    boolean existsByName(String name);
+    boolean existsByEmail(String email);
 
     AuthResponse loginUser(LoginRequest loginRequest);
 
     InternalUserDTO getCurrentUser();
-
-    InternalUserDTO getUserById(Long id);
 
 }

@@ -22,6 +22,12 @@ public class JwtTokenUtil {
 
 	private final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
 
+	/**
+	 * Generate an access token for the given user.
+	 *
+	 * @param user The user for whom to generate the token.
+	 * @return The generated access token.
+	 */
 	public String generateAccessToken(User user) {
 		return Jwts.builder()
 				.setSubject(format("%s", user.getUsername()))
@@ -31,16 +37,34 @@ public class JwtTokenUtil {
 				.compact();
 	}
 
+	/**
+	 * Get the username from the JWT token.
+	 *
+	 * @param token The JWT token.
+	 * @return The username extracted from the token.
+	 */
 	public String getUsername(String token) {
 		Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 		return claims.getSubject().split(",")[0];
 	}
 
+	/**
+	 * Get the expiration date from the JWT token.
+	 *
+	 * @param token The JWT token.
+	 * @return The expiration date extracted from the token.
+	 */
 	public Date getExpirationDate(String token) {
 		Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 		return claims.getExpiration();
 	}
 
+	/**
+	 * Validate the JWT token.
+	 *
+	 * @param token The JWT token to validate.
+	 * @return True if the token is valid, false otherwise.
+	 */
 	public boolean validate(String token) {
 		try {
 			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);

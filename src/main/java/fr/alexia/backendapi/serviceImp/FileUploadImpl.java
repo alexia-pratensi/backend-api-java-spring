@@ -16,12 +16,21 @@ public class FileUploadImpl implements FileUploadService {
 
     private final Cloudinary cloudinary;
 
+    /**
+     * Upload a file to Cloudinary.
+     *
+     * @param multipartFile The file to be uploaded.
+     * @return String The URL of the uploaded file.
+     * @throws IOException If an I/O exception occurs during file upload.
+     */
     @Override
     public String uploadFile(MultipartFile multipartFile) throws IOException {
-        return cloudinary.uploader()
-                .upload(multipartFile.getBytes(),
+        return cloudinary.uploader() // Upload the file to Cloudinary using the Cloudinary uploader
+                .upload(multipartFile.getBytes(), // The uploader().upload() method takes the file's bytes and the
+                                                  // public ID as parameters
+                        // It uploads the file to the Cloudinary service with the specified public ID.
                         Map.of("public_id", UUID.randomUUID().toString()))
-                .get("url")
+                .get("url") // Get the URL of the uploaded file from the response
                 .toString();
     }
 }
