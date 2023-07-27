@@ -1,92 +1,52 @@
 package fr.alexia.backendapi.model;
 
-
-
-
+import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
-@Table(name = "rentals")
+@Table(name = "RENTALS")
 public class Rental {
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)	
-	 private long id;
-	 
-	 private String name;
-	 
-	 private int surface;
-	 
-	 private int price;
-	 
-	 private String picture;
-	 
-	 private String description;
-	 
-	 @Column(name="owner_id")
-	 private int ownerId;
 
-	public long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    @Column(nullable = false)
+    private String name;
 
-	public String getName() {
-		return name;
-	}
+    @Column(nullable = false)
+    private int surface;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Column(nullable = false)
+    private int price;
 
-	public int getSurface() {
-		return surface;
-	}
+    private String picture;
 
-	public void setSurface(int surface) {
-		this.surface = surface;
-	}
+    @Column(nullable = false, length = 2000)
+    private String description;
 
-	public int getPrice() {
-		return price;
-	}
+    @Column(name = "owner_id")
+    private Long owner_id;
 
-	public void setPrice(int price) {
-		this.price = price;
-	}
+    @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created_at;
 
-	public String getPicture() {
-		return picture;
-	}
+    @Column(name = "updated_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated_at;
 
-	public void setPicture(String picture) {
-		this.picture = picture;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public int getOwnerId() {
-		return ownerId;
-	}
-
-	public void setOwnerId(int ownerId) {
-		this.ownerId = ownerId;
-	}
- 
-	 
- 
 }

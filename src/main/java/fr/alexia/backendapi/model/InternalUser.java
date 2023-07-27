@@ -10,34 +10,36 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "MESSAGES")
-public class Message {
+@Table(name = "USERS")
+public class InternalUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "rental_id", nullable = false)
-    private Long rentalId;
+    @Column(nullable = false, unique = true)
+    private String email;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Column(nullable = false)
+    private String name;
 
-    @Column(nullable = false, length = 2000)
-    private String message;
+    @Column(nullable = false)
+    private String password;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private Date created_at;
 
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    private Date updated_at;
 
 }

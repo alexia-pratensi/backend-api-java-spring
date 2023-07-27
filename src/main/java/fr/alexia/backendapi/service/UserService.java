@@ -1,21 +1,19 @@
 package fr.alexia.backendapi.service;
 
-import java.util.Optional;
+import org.springframework.security.core.userdetails.UserDetails;
+import fr.alexia.backendapi.DTO.AuthResponse;
+import fr.alexia.backendapi.DTO.InternalUserDTO;
+import fr.alexia.backendapi.DTO.LoginRequest;
+import fr.alexia.backendapi.model.InternalUser;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+public interface UserService {
 
-import fr.alexia.backendapi.model.User;
-import fr.alexia.backendapi.repository.UserRepository;
+    UserDetails registerUser(InternalUser user);
 
-@Service
-public class UserService {
-	
-	@Autowired
-    private UserRepository userRepository;
-	
-	public Optional<User> getUser(final Long id) {
-        return userRepository.findById(id);
-    }
+    boolean existsByEmail(String email);
+
+    AuthResponse loginUser(LoginRequest loginRequest);
+
+    InternalUserDTO getCurrentUser();
 
 }
