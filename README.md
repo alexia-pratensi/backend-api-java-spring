@@ -30,7 +30,7 @@ This API can be connected with this angular project (v14) provided by Openclassr
 
 ### Prerequisites
 
-- Java Development Kit (JDK) 8 or higher
+- Java Development Kit (JDK) 17
 - Maven
 - Cloudinary account for file upload (API key, secret, and cloud name)
 - Angular CLI 14 and Nodes.js (if you test this API with the frontend app proposed)
@@ -44,7 +44,7 @@ This API can be connected with this angular project (v14) provided by Openclassr
 3. Download MySQL Workbench and select File > Open SQL Script > choose script.sql using this path: [your folder]\Developpez-le-back-end-en-utilisant-Java-et-Spring\ressources\sql\script.sql
 4. Click on lightning ⚡ (execute the selected portions of the script…) to generate the schemas
 5. On the left sidebar (“navigator”), if you select the “schemas” tab, you will see all the tables generated. If you double click on one of them, its window will open. Then you can check the content recorded with the following code: “SELECT * FROM script.tablename;“ followed by a click on ⚡
-
+6. On the API project, add your database configuration in application.properties file with your credentials (username, password)
 
 ### Installation
 
