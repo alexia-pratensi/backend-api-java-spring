@@ -18,6 +18,7 @@ import fr.alexia.backendapi.DTO.AuthResponse;
 import fr.alexia.backendapi.DTO.InternalUserDTO;
 import fr.alexia.backendapi.DTO.LoginRequest;
 import fr.alexia.backendapi.configuration.JwtTokenUtil;
+import fr.alexia.backendapi.exceptions.ApiException;
 import fr.alexia.backendapi.model.InternalUser;
 import fr.alexia.backendapi.repository.UserRepository;
 import fr.alexia.backendapi.service.UserService;
@@ -150,6 +151,22 @@ public class UserServiceImpl implements UserService {
             return convertToDTO(user);
         }
         return null;
+    }
+
+    /**
+     * Get a user by their ID.
+     *
+     * @param id The ID of the user to retrieve.
+     * @return InternalUserDTO: The user as a Data Transfer Object (DTO).
+     * @throws ApiException.NotFoundException: If the user with the specified ID is
+     *                                         not found.
+     */
+    @Override
+    public InternalUserDTO getUserById(Long id) {
+        Optional<InternalUser> userOptional = userRepository.findById(id);
+        InternalUser user = userOptional
+                .orElseThrow(() -> new ApiException.NotFoundException("User not found with ID: " + id));
+        return convertToDTO(user);
     }
 
 }

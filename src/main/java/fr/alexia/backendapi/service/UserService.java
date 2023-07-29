@@ -16,4 +16,6 @@ public interface UserService {
 
     InternalUserDTO getCurrentUser();
 
+    InternalUserDTO getUserById(Long id);
+
 }
