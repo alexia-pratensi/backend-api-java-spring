@@ -41,44 +41,27 @@ public class SecurityConfig {
 		http
 				.cors(Customizer.withDefaults()) // Enable Cross-Origin Resource Sharing (CORS) with default settings.
 				.csrf(csrf -> csrf.disable()) // Disable CSRF protection.
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Set
-																												// session
-																												// creation
-																												// policy
-																												// to
-																												// STATELESS,
-																												// meaning
-																												// no
-																												// session
-																												// will
-																												// be
-																												// created
-																												// or
-																												// used.
+				// Set session creation policy to STATELESS, meaning no session will be created
+				// or used.
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.exceptionHandling(handler -> handler.authenticationEntryPoint((request, response, ex) -> {
-					response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage()); // Handle unauthorized
-																								// access by sending 401
-																								// Unauthorized status
-																								// code.
+					// Handle unauthorized access by sending 401 Unauthorized status code.
+					response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
 				}))
 
 				.authorizeHttpRequests(authorize -> {
 					authorize
-							.requestMatchers("/api/auth/login", "/api/auth/register").permitAll() // Allow access to
-																									// login and
-																									// register
-																									// endpoints without
-																									// authentication.
+							// Allow access to login and register endpoints without authentication.
+							.requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+							// Allow access to Swagger UI and documentation endpoints without
+							// authentication.
 							.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/documentation.html",
-									"/v3/api-docs/**") // Allow access to Swagger UI and documentation endpoints without
-														// authentication.
+									"/v3/api-docs/**")
 							.permitAll()
 							.anyRequest().authenticated(); // Require authentication for all other requests.
 				})
-
-				.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT token filter
-																								// before
-																								// UsernamePasswordAuthenticationFilter.
+				// Add JWT token filter before UsernamePasswordAuthenticationFilter.
+				.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}

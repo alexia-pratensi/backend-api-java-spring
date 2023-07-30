@@ -92,14 +92,12 @@ public class RentalController {
 			return ResponseEntity.ok(rentalDTO);
 
 		} catch (ApiException.NotFoundException ex) {
-			Logger logger = LoggerFactory.getLogger(RentalController.class);
 			logger.error("Rental not found with ID: " + id, ex);
 			ErrorResponse errorResponse = new ErrorResponse("Rental not found",
 					Arrays.asList("Rental with ID " + id + " not found."));
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
 
 		} catch (ApiException.BadRequestException ex) {
-			Logger logger = LoggerFactory.getLogger(RentalController.class);
 			logger.error("Invalid ID supplied: " + id, ex);
 			ErrorResponse errorResponse = new ErrorResponse("Bad request", Arrays.asList("Invalid ID supplied: " + id));
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);

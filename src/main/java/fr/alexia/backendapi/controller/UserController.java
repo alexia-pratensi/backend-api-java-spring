@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,13 +35,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -65,7 +62,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<?> register(@RequestBody @Valid InternalUser user) {
         try {
             // Create a new user
@@ -112,7 +109,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         try {
             AuthResponse authSuccess = userServiceImpl.loginUser(loginRequest);
@@ -147,7 +144,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
-    @GetMapping("/me")
+    @GetMapping("/auth/me")
     public ResponseEntity<InternalUserDTO> getCurrentUser() {
         try {
             InternalUserDTO userDTO = userService.getCurrentUser();
@@ -164,6 +161,35 @@ public class UserController {
         } catch (Exception ex) {
             // Handle any other unexpected exceptions
             logger.error("Error occurred while fetching current user: ", ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * Get user by ID
+     *
+     * @param id The ID of the user to retrieve.
+     * @return ResponseEntity<InternalUserDTO> A response entity containing the user
+     *         DTO if found, or an error response if not found.
+     */
+    @Operation(summary = "Get user by ID", description = "Route for getting a user by their ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = InternalUserDTO.class))),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+    })
+    @GetMapping("/user/{id}")
+    public ResponseEntity<InternalUserDTO> getUserById(@PathVariable("id") Long id) {
+        try {
+            InternalUserDTO userDTO = userServiceImpl.getUserById(id);
+            return ResponseEntity.ok(userDTO);
+        } catch (UsernameNotFoundException ex) {
+            // Handle the case where the user is not found
+            logger.error("User not found: " + ex.getMessage(), ex);
+            return ResponseEntity.notFound().build();
+        } catch (Exception ex) {
+            // Handle any other unexpected exceptions
+            logger.error("Error occurred while fetching user: ", ex);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
