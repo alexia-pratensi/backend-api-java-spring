@@ -66,12 +66,12 @@ Swagger Documentation : http://localhost:3001/documentation.html
 - **POST** `/api/auth/login`
 - **GET** `/api/auth/me`
 
-- **POST** `/messages`
+- **POST** `api/messages`
 
-- **GET** `/rentals`
-- **GET** `/rentals/{id}`
-- **POST** `/rentals`
-- **PUT** `/rentals/{id}`
+- **GET** `api/rentals`
+- **GET** `api/rentals/{id}`
+- **POST** `api/rentals`
+- **PUT** `api/rentals/{id}`
 
 ## Author
 Alexia PRATENSI
