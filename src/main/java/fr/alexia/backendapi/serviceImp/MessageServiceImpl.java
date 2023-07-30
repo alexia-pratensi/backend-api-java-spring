@@ -2,13 +2,10 @@ package fr.alexia.backendapi.serviceImp;
 
 import java.util.Date;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import fr.alexia.backendapi.DTO.InternalUserDTO;
 import fr.alexia.backendapi.DTO.MessageDTO;
-import fr.alexia.backendapi.controller.UserController;
 import fr.alexia.backendapi.model.Message;
 import fr.alexia.backendapi.repository.MessageRepository;
 import fr.alexia.backendapi.repository.RentalRepository;
@@ -17,8 +14,6 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class MessageServiceImpl implements MessageService {
-
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private MessageRepository messageRepository;
